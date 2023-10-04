@@ -1,0 +1,29 @@
+server {
+    listen 8900 ssl;
+    server_name eco-rbk.kz; # Replace with your actual domain
+
+    ssl_certificate /etc/letsencrypt/live/eco-rbk.kz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/eco-rbk.kz/privkey.pem;
+
+    root /var/www/eco_rbk_back/public; # Adjust the path as needed
+
+    location / {
+    index index.html index.htm index.html index.php;
+    try_files $uri $uri/ /index.php?$query_string;
+
+    autoindex on;
+    autoindex_exact_size on;
+
+}
+ 
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock; # Adjust the path and PHP version as needed
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+    location ~ /\.(?!well-known).* {
+  deny all;
+}
+
+}
