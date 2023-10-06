@@ -1,0 +1,22 @@
+server {
+    listen 8900;
+    server_name www.eco-rbk.kz eco-rbk.kz;
+
+    root /var/www/eco_rbk_back/public
+    include snippets/letsencrypt.conf;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name www.eco-rbk.kz;
+
+    ssl_certificate /etc/letsencrypt/live/eco-rbk.kz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/eco-rbk.kz/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/eco-rbk.kz/chain.pem;
+    include snippets/ssl.conf;
+    include snippets/letsencrypt.conf;
+
+    return 301 https://eco-rbk.kz$request_uri;
+}
+
